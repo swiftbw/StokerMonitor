@@ -1,16 +1,30 @@
 import string
 
 
-filename = '/users/swiftb/StokerMonitor/20130528Ribs/Stoker20130527151638'
 
-f = open(filename, 'r')
+class StokeFileParser():
+    filestring = None
+    def __init__(self, filename):
+        f = open(filename, 'r')
 
-filestring = f.read()
+        self.filestring = f.read()
 
-bge = filestring.find('BGE')
+    def getValueForKey(self, key):
+        keystr = self.filestring.find(key)
+        keyvaluestart = self.filestring.find('<td>', keystr)+4
+        keyvalueend = self.filestring.find('</td>', keyvaluestart)
 
-bgevaluestart = filestring.find('<td>', bge)+4
-bgevalueend = filestring.find('</td>', bgevaluestart)
+        return(self.filestring[keyvaluestart:keyvalueend])
 
-print bgevaluestart, bgevalueend
-print filestring[bgevaluestart:bgevalueend]
+
+def main():
+    filename = '/users/swiftb/StokerMonitor/20130528Ribs/Stoker20130527151638'
+
+    sfp = StokeFileParser(filename)
+    print 'BGE' + ' ' + sfp.getValueForKey('BGE')
+    print 'MEAT2' + ' ' + sfp.getValueForKey('MEAT2')
+
+if __name__ == '__main__':
+    main()
+
+    
