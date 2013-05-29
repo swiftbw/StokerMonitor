@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<STYLE type="text/css">
+.ser_num { display: none }
+</STYLE><style type="text/css">
+.alarming { background-color: red }
+</style>
+<script type="text/javascript">
+<!--
+function refreshPeriodic() {
+location.reload(true);
+}
+timerID = setTimeout("refreshPeriodic()", 10 * 60 * 1000);
+var temp_los = new Array();
+var temp_his = new Array();
+var ofs_sw;
+var ofs_sr;
+var ofs_chk;
+function do_disable(row, force) {
+var ofs = ofs_sr + row * 6;
+if (document.forms[0].elements[ofs + 2].selectedIndex != 2) {
+if (sel[row * 2] == 2 || force == 1) {
+temp_los[row] = document.forms[0].elements[ofs + 3].value;
+temp_his[row] = document.forms[0].elements[ofs + 4].value;
+}
+document.forms[0].elements[ofs + 3].value = "n/a";
+document.forms[0].elements[ofs + 4].value = "n/a";
+}
+else if (force == 0) {
+document.forms[0].elements[ofs + 3].value = temp_los[row];
+document.forms[0].elements[ofs + 4].value = temp_his[row];
+}
+sel[row * 2] = document.forms[0].elements[ofs + 2].selectedIndex;
+}
+function set_sw(row) {
+var i;
+var ofs = ofs_sr + row * 6;
+if (sel[row * 2 + 1] == "") {
+document.forms[0].elements[ofs + 5].selectedIndex = 0;
+return;
+}
+for (i = 0; i < sw_id.length; i++) {
+if (sel[row * 2 + 1] == sw_id[i]) {
+document.forms[0].elements[ofs + 5].selectedIndex = i + 1;
+return;
+}
+}
+}
+function do_presel(sr_rows, sw_rows) {
+var i;
+ofs_sr = sw_rows;
+ofs_sw = 0;
+ofs_chk = sw_rows + sr_rows * 6;
+for (i = 0; i < sr_rows; i++) {
+document.forms[0].elements[ofs_sr + i * 6 + 2].selectedIndex = sel[i * 2];
+do_disable(i, 1);
+set_sw(i);
+}
+document.forms[0].elements[ofs_chk].checked = check;
+}
+//-->
+</script>
+<TITLE>Stoker Status</TITLE>
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Cache-control" CONTENT="no-cache">
+<META HTTP-EQUIV="Cache" CONTENT="no-cache">
+</HEAD>
+<BODY onload="do_presel(3,1)">
+<table>
+<form METHOD="POST" ENCTYPE="application/x-www-form-urlencoded" ACTION="stoker.Post_Handler" NAME="form1">
+<tr>
+<td>
+<p>
+<font size="+2"><b>Stoker Status</b></font><br />
+Powered by <a href="http://www.rocksbarbque.com">Rock's Bar-B-Que</a><br />
+Software by kaytat, Version
+2.6.0.193</p>
+<script type="text/javascript">
+<!--
+document.write(Date() + "<br /><b>Temperatures in F</b>");
+//-->
+</script>
+</td>
+<td align="right">
+<table BORDER="2" CELLPADDING="5">
+<tr><td class="ser_num"><b>Blower</b></td>
+<td><b>Available Blowers</b></td></tr>
+<tr>
+<td class="ser_num">430000001A91F805</td>
+<td><input size="16" maxLength="32" name="n2430000001A91F805" value="Blower 1"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<table BORDER="2" CELLPADDING="5">
+<tr>
+<td class="ser_num"><b>Temp Sensor</b></td>
+<td><b>Description</b></td>
+<td><b>Temp</b></td>
+<td><b>Target</b></td>
+<td><b>Alarm</b></td>
+<td><b>Low Set</b></td>
+<td><b>High Set</b></td>
+<td><b>Blower</b></td>
+</tr>
+<tr><td colspan="7"><b>Control Sensors</b></td></tr>
+<tr>
+<td class="ser_num">FF000012591C0B30</td>
+<td><input size="16" maxLength="32" name="n1FF000012591C0B30" value="BGE"></td>
+<td>220.1</td>
+<td><input size="6" maxLength="6" name="taFF000012591C0B30" value="225"></td>
+<td><select name="alFF000012591C0B30" onchange="do_disable(0, 0)">
+<option value="0">None
+<option value="1">Food
+<option value="2">Fire
+</select>
+</td>
+<td><input size="6" maxLength="6" name="tlFF000012591C0B30" value="205"></td>
+<td><input size="6" maxLength="6" name="thFF000012591C0B30" value="215"></td>
+<td><select name="swFF000012591C0B30">
+<option value="None">None
+<option value="430000001A91F805">Blower 1
+</select>
+</td>
+</tr>
+<tr><td colspan="7"><b>Alarm Sensors (None)</b></td></tr>
+<tr><td colspan="7"><b>Monitoring Sensors</b></td></tr>
+<tr>
+<td class="ser_num">F40000125921E630</td>
+<td><input size="16" maxLength="32" name="n1F40000125921E630" value="MEAT"></td>
+<td>147.8</td>
+<td><input size="6" maxLength="6" name="taF40000125921E630" value="100"></td>
+<td><select name="alF40000125921E630" onchange="do_disable(1, 0)">
+<option value="0">None
+<option value="1">Food
+<option value="2">Fire
+</select>
+</td>
+<td><input size="6" maxLength="6" name="tlF40000125921E630" value="32"></td>
+<td><input size="6" maxLength="6" name="thF40000125921E630" value="32"></td>
+<td><select name="swF40000125921E630">
+<option value="None">None
+<option value="430000001A91F805">Blower 1
+</select>
+</td>
+</tr>
+<tr>
+<td class="ser_num">B4000012591D9A30</td>
+<td><input size="16" maxLength="32" name="n1B4000012591D9A30" value="MEAT2"></td>
+<td>141</td>
+<td><input size="6" maxLength="6" name="taB4000012591D9A30" value="32"></td>
+<td><select name="alB4000012591D9A30" onchange="do_disable(2, 0)">
+<option value="0">None
+<option value="1">Food
+<option value="2">Fire
+</select>
+</td>
+<td><input size="6" maxLength="6" name="tlB4000012591D9A30" value="32"></td>
+<td><input size="6" maxLength="6" name="thB4000012591D9A30" value="32"></td>
+<td><select name="swB4000012591D9A30">
+<option value="None">None
+<option value="430000001A91F805">Blower 1
+</select>
+</td>
+</tr>
+<SCRIPT type="text/javascript">
+<!--
+var sel = [0,"430000001A91F805",0,"",0,""];
+var sw_id = ["430000001A91F805"];
+var check = false
+//-->
+</script>
+<tr>
+<td class="ser_num"><b>Temp Sensor</b></td>
+<td><b>Description</b></td>
+<td><b>Temp</b></td>
+<td><b>Target</b></td>
+<td><b>Alarm</b></td>
+<td><b>Low Set</b></td>
+<td><b>High Set</b></td>
+<td><b>Blower</b></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<br />
+<input type="checkbox" name="q_show_ser" />Show serial numbers<br />
+<INPUT TYPE="submit" VALUE="Save Changes" />
+</td>
+</tr>
+</form>
+<form METHOD="POST" ENCTYPE="application/x-www-form-urlencoded" ACTION="stoker.Post_Handler" NAME="form2">
+<tr>
+<td colspan="2"><br />
+</td>
+</tr>
+</form>
+</table>
+</form>
+</BODY>
+</HTML>
